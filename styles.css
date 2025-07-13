@@ -19,17 +19,22 @@ body * {
 }
 
 header#header {
-    position: absolute;
-    margin: auto;
-    top: 25px;
     width: 100%;
     display: flex;
     z-index: 100;
     background: #fff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 50px; /* Zwiększenie marginesu dolnego dla nagłówka */
+    padding: 10px 0;
+    position: relative; /* Zmieniamy na relative, aby móc użyć JavaScript do zmiany pozycji */
+    transition: all 0.3s ease; /* Dodajemy płynne przejście */
 }
 
+header#header.fixed {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    animation: slideDown 0.5s ease forwards; /* Animacja dla płynnego przejścia */
+}
 header#header .et-container {
     width: min(95%, 1320px);
     margin: auto;
@@ -43,9 +48,8 @@ header#header .et-container {
 }
 
 header#header .logo img {
-    width: auto;
-    height: 80px; /* Ustawienie wysokości logo, aby pasowało do linii menu */
-    margin-right: 20px; /* Dodanie marginesu po prawej stronie logo */
+    height: 50px;
+    margin-right: 10px;
 }
 
 header#header nav#header-nav {
@@ -54,29 +58,31 @@ header#header nav#header-nav {
 
 header#header ul#header-nav-menu {
     padding: 0;
-    display: flex;
-    gap: 40px;
     margin: 0;
     list-style-type: none;
+    display: flex;
+    gap: 10px;
     justify-content: center;
+    flex-wrap: wrap;
 }
+
 
 header#header ul#header-nav-menu li a {
     text-decoration: none;
     color: var(--c1);
     text-transform: uppercase;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 700;
 }
 
 .btn-theme {
     border: none;
     text-transform: uppercase;
-    font-size: 16px;
+    font-size: 12px;
     color: #fff;
     background: linear-gradient(to right, var(--c1), var(--c2));
     display: inline-block;
-    padding: 20px 40px;
+    padding: 8px 16px;
     text-decoration: none;
     border-radius: 50px;
     transition: all 0.5s ease;
@@ -89,30 +95,39 @@ header#header ul#header-nav-menu li a {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
 .hero {
     height: 80vh;
-    transform: translate(0px, -150px);
-    margin-bottom: -100px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 50px; /* Dodanie marginesu górnego dla sekcji hero */
+    background-image: url('grafiki/tlo.jpg'); /* Ścieżka do twojego obrazu */
+    background-size: cover; /* Dopasowuje obraz do rozmiaru sekcji */
+    background-position: center; /* Wyśrodkowuje obraz */
+    background-repeat: no-repeat; /* Zapobiega powtarzaniu obrazu */
+    color: white; /* Ustaw kolor tekstu na biały, aby był widoczny na tle */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Dodaje cień do tekstu, aby był lepiej widoczny */
+    position: relative; /* Ustawia pozycję na względną, aby można było dodać nakładki */
 }
 
-.hero .video-wrapper {
+.hero::before {
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    background-color: rgba(0, 0, 0, 0.5); /* Dodaje półprzezroczystą warstwę, aby tekst był lepiej widoczny */
+    z-index: 0;
 }
-
-.hero .video-wrapper video {
-    width: 100%;
-    height: 100%;
-}
-
 .hero .et-container {
     position: relative;
     z-index: 1;
@@ -122,7 +137,6 @@ header#header ul#header-nav-menu li a {
     text-align: center;
     color: #000;
 }
-
 .heading-1 {
     font-family: var(--f2);
     font-size: 52px;
@@ -152,8 +166,8 @@ header#header ul#header-nav-menu li a {
     text-transform: uppercase;
     font-weight: 700;
     color: var(--c1);
-    font-size: 16px;
-    line-height: 28px;
+    font-size: 14px;
+    line-height: 24px;
     margin-bottom: 8px;
 }
 
@@ -248,22 +262,21 @@ footer#footer {
     font-weight: 700;
 }
 
-@media (max-width: 991px) {
-    header#header nav#header-nav {
-        flex-direction: column;
+@media (max-width: 480px) {
+    header#header {
+        padding: 5px 0;
+    }
+
+    header#header .logo img {
+        height: 40px;
     }
 
     .hero {
-        height: auto;
-        transform: none;
-        margin-bottom: 0;
+        margin-top: 60px;
     }
 
-    .o-nas .et-container {
-        flex-direction: column;
-    }
-
-    .o-nas .thumbnail, .o-nas .wrap {
-        width: 100%;
+    .heading-6 {
+        font-size: 12px;
+        line-height: 20px;
     }
 }

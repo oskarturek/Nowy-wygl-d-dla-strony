@@ -46,24 +46,87 @@
         <section class="forum">
             <div class="et-container">
                 <h2>Forum dla Członków</h2>
-                <div class="forum-posts">
-                    <div class="forum-post">
-                        <h3>Tytuł Postu 1</h3>
-                        <p>Treść postu 1... Tutaj można dodać więcej treści lub szczegółów na temat postu.</p>
-                    </div>
-                    <div class="forum-post">
-                        <h3>Tytuł Postu 2</h3>
-                        <p>Treść postu 2... Tutaj można dodać więcej treści lub szczegółów na temat postu.</p>
-                    </div>
+                <div class="forum-posts" id="forumPosts">
+                    <!-- Posty będą dodawane tutaj dynamicznie -->
+                </div>
+                <div class="new-post">
+                    <h3>Dodaj Nowy Post</h3>
+                    <form id="newPostForm">
+                        <input type="text" id="postTitle" placeholder="Tytuł postu" required>
+                        <textarea id="postContent" placeholder="Treść postu..." required></textarea>
+                        <button type="submit" class="btn-theme">Opublikuj Post</button>
+                    </form>
                 </div>
             </div>
         </section>
     </main>
-
     <footer id="footer">
         <div class="et-container">
             <p>Regionalna Organizacja Pracodawców w Częstochowie 2024</p>
         </div>
     </footer>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const newPostForm = document.getElementById('newPostForm');
+    const forumPosts = document.getElementById('forumPosts');
+
+    // Przykładowe posty
+    addPost("Witamy na forum!", "To jest pierwszy post na naszym forum. Zachęcamy do aktywnego udziału i dzielenia się swoimi pomysłami.");
+    addPost("Spotkanie członków", "Zapraszamy wszystkich członków na nadchodzące spotkanie, które odbędzie się w przyszłym tygodniu. Prosimy o potwierdzenie obecności.");
+
+    // Obsługa dodawania nowego postu
+    newPostForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const postTitle = document.getElementById('postTitle').value;
+        const postContent = document.getElementById('postContent').value;
+
+        if (postTitle && postContent) {
+            addPost(postTitle, postContent);
+            newPostForm.reset();
+        }
+    });
+
+    // Funkcja dodająca nowy post do forum
+    function addPost(title, content) {
+        const postId = 'post-' + Date.now();
+        const post = document.createElement('div');
+        post.className = 'forum-post';
+        post.id = postId;
+        post.innerHTML = `
+            <h3>${title}</h3>
+            <p>${content}</p>
+            <div class="post-comments">
+                <h4>Komentarze</h4>
+                <div id="comments-${postId}" class="comments-container"></div>
+                <form class="add-comment-form" data-post-id="${postId}">
+                    <textarea class="commentContent" placeholder="Dodaj swój komentarz..." required></textarea>
+                    <button type="submit" class="btn-theme">Dodaj komentarz</button>
+                </form>
+            </div>
+        `;
+        forumPosts.appendChild(post);
+
+        // Dodaj obsługę formularza komentarza dla nowego postu
+        const commentForm = post.querySelector('.add-comment-form');
+        commentForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const commentContent = commentForm.querySelector('.commentContent').value;
+            if (commentContent) {
+                addComment(postId, commentContent);
+                commentForm.reset();
+            }
+        });
+    }
+
+    // Funkcja dodająca nowy komentarz do postu
+    function addComment(postId, commentContent) {
+        const commentsContainer = document.getElementById(`comments-${postId}`);
+        const comment = document.createElement('div');
+        comment.className = 'comment';
+        comment.innerHTML = `<p><strong>Użytkownik:</strong> ${commentContent}</p>`;
+        commentsContainer.appendChild(comment);
+    }
+});
+</script>
 </body>
 </html>
